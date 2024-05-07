@@ -4,6 +4,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
 import os
 from dotenv import load_dotenv
+from collections import Counter
 
 load_dotenv() #load environment variables
 
@@ -13,7 +14,9 @@ app.config['SECRET_KEY'] = os.urandom(64)
 client_id = os.getenv("client_id") #get environment variable client_id
 client_secret = os.getenv("client_secret") #get enrionment variable client_secret
 redirect_uri = "http://localhost:5000/callback" #redirect url
-scope = "playlist-read-private" #gets back users private playlists, we will need more than one scope
+scope = "playlist-read-private, playlist-read-collaborative, user-top-read, user-read-recently-played \
+         playlist-modify-private, playlist-modify-public, user-library-modify, user-library-read \
+         streaming" #gets back users private playlists, we will need more than one scope
 
 cache_handler = FlaskSessionCacheHandler(session) # stores token in current flask session
 sp_oauth = SpotifyOAuth(
@@ -49,11 +52,13 @@ def get_playlists():
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
     
-    playlists = sp.current_user_playlists() #sp is the spotify client
-    playlists_info = [(pl['name'], pl['external_urls']['spotify']) for pl in playlists['items']] #iterating through every playlist
-    playlists_html = '<br>'.join([f'{name}: {url}' for name, url in playlists_info])
+    recentlyPlayed = sp.current_user_top_artists()
+    recentlyPlayed_info = [(artist['name'], artist['genres']) for artist in recentlyPlayed['items']]
+    return recentlyPlayed_info
 
-    return playlists_html
+    recentlyPlayed_html = '<br>'.join([f'{name}: {genres}' for name, genres in recentlyPlayed_info])
+    return recentlyPlayed_html
+
 
 @app.route('/logout') #Clears session data, effetively logging out the user, and redirects to the home page.
 def logout():
