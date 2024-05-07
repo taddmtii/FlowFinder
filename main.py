@@ -35,7 +35,8 @@ def home():
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
     return redirect(url_for('get_playlists'))
-    # return render_template("home.html")
+    # mountains = ['Everest', 'K2', 'Kilimianjaro']
+    # return render_template("home.html", mountain = mountains)
 
 @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to get_playlists endpoint.
 def callback():
