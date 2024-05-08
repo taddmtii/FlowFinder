@@ -61,10 +61,17 @@ def get_playlists():
     #top tracks
     topTracks = sp.current_user_top_tracks()
     topTracks_info = [(track['artists'][0]['name'], track['name']) for track in topTracks['items']]
+
+    # recommended tracks
+    trackIDList = [track['id'] for track in topTracks['items']]
+    recommendations = sp.recommendations(seed_tracks=["5Se32hEA9raeboZerywxka"])
+    recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
+
     return render_template('home.html',
                            topTracks_info = topTracks_info, 
                            displayName = displayName, 
-                           recentlyPlayed_info = recentlyPlayed_info
+                           recentlyPlayed_info = recentlyPlayed_info,
+                           recommendations_info = recommendations_info
                            )
 
 

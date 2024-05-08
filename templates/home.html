@@ -16,5 +16,12 @@
             {% endfor %}
         </ul>
 
+        <h2>Here are some recommendations: </h2>
+            <ul>
+                {% for artist, song in recommendations_info %}
+                <li>{{artist}}: {{song}}</li>
+                {% endfor %}
+            </ul>
+        </h2>
     </body>
 </html>

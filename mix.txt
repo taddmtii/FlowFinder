@@ -42,3 +42,5 @@ Write to playlists:
 
     -streaming (control playback of a spotify track):
 
+#FOR CREATING PLAYLISTS:
+https://developer.spotify.com/documentation/web-api/reference/create-playlist
