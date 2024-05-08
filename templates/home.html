@@ -1,27 +1,46 @@
 <html>
     <body>
         <h1>Hello {{ displayName }}!</h1>
-
-        <h2>Here are your top 20 songs: </h2>
-        <ul>
+        <h2>Here are your top 20 songs:</h2>
+        <table class="table">
+            <tr>
+                <th>Artist</th>
+                <th>Song</th>
+            </tr>
             {% for artist, song in topTracks_info %}
-            <li>{{ artist }}: {{ song }}</li>
+            <tr>
+                <td>{{ artist }}</td>
+                <td>{{ song }}</td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
 
-        <h2>And here are your top artists: </h2>
-        <ul>
+        <h2>And here are your top artists:</h2>
+        <table class="table">
+            <tr>
+                <th>Artist</th>
+                <th>Genres</th>
+            </tr>
             {% for name, genres in recentlyPlayed_info %}
-            <li>{{name}}: {{genres}}</li>
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ genres }}</td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
 
-        <h2>Here are some recommendations: </h2>
-            <ul>
-                {% for artist, song in recommendations_info %}
-                <li>{{artist}}: {{song}}</li>
-                {% endfor %}
-            </ul>
-        </h2>
+        <h2>Here are some recommendations:</h2>
+        <table class="table">
+            <tr>
+                <th>Artist</th>
+                <th>Song</th>
+            </tr>
+            {% for artist, song in recommendations_info %}
+            <tr>
+                <td>{{ artist }}</td>
+                <td>{{ song }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </body>
 </html>

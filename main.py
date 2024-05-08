@@ -51,7 +51,7 @@ def get_playlists():
         return redirect(auth_url)
     
     #get top artists and their genres
-    recentlyPlayed = sp.current_user_top_artists()
+    recentlyPlayed = sp.current_user_top_artists(limit=5)
     recentlyPlayed_info = [(artist['name'], artist['genres']) for artist in recentlyPlayed['items']]
 
     #get current users name for display
@@ -59,12 +59,12 @@ def get_playlists():
     displayName = user['display_name']
 
     #top tracks
-    topTracks = sp.current_user_top_tracks()
+    topTracks = sp.current_user_top_tracks(limit=5)
     topTracks_info = [(track['artists'][0]['name'], track['name']) for track in topTracks['items']]
 
     # recommended tracks
-    trackIDList = [track['id'] for track in topTracks['items']]
-    recommendations = sp.recommendations(seed_tracks=["5Se32hEA9raeboZerywxka"])
+    trackIDList = [track['id'] for track in topTracks['items'][:5]]
+    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=10)
     recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
 
     return render_template('home.html',
