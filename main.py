@@ -38,8 +38,6 @@ def home():
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
     return redirect(url_for('get_playlists'))
-    # mountains = ['Everest', 'K2', 'Kilimianjaro']
-    # return render_template("home.html", mountain = mountains)
 
 @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to get_playlists endpoint.
 def callback():
@@ -52,12 +50,22 @@ def get_playlists():
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
     
+    #get top artists and their genres
     recentlyPlayed = sp.current_user_top_artists()
     recentlyPlayed_info = [(artist['name'], artist['genres']) for artist in recentlyPlayed['items']]
-    return recentlyPlayed_info
 
-    recentlyPlayed_html = '<br>'.join([f'{name}: {genres}' for name, genres in recentlyPlayed_info])
-    return recentlyPlayed_html
+    #get current users name for display
+    user = sp.current_user()
+    displayName = user['display_name']
+
+    #top tracks
+    topTracks = sp.current_user_top_tracks()
+    topTracks_info = [(track['artists'][0]['name'], track['name']) for track in topTracks['items']]
+    return render_template('home.html',
+                           topTracks_info = topTracks_info, 
+                           displayName = displayName, 
+                           recentlyPlayed_info = recentlyPlayed_info
+                           )
 
 
 @app.route('/logout') #Clears session data, effetively logging out the user, and redirects to the home page.

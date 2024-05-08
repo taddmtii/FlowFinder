@@ -1,5 +1,20 @@
 <html>
     <body>
-            <h1>Hello User!</h1>
+        <h1>Hello {{ displayName }}!</h1>
+
+        <h2>Here are your top 20 songs: </h2>
+        <ul>
+            {% for artist, song in topTracks_info %}
+            <li>{{ artist }}: {{ song }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>And here are your top artists: </h2>
+        <ul>
+            {% for name, genres in recentlyPlayed_info %}
+            <li>{{name}}: {{genres}}</li>
+            {% endfor %}
+        </ul>
+
     </body>
 </html>
