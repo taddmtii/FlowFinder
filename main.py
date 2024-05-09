@@ -37,15 +37,15 @@ def home():
     if not sp_oauth.validate_token(cache_handler.get_cached_token()): #if not logged in (checks if we have valid user token through cache handler)
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
-    return redirect(url_for('get_playlists'))
+    return redirect(url_for('main'))
 
-@app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to get_playlists endpoint.
+@app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
 def callback():
     sp_oauth.get_access_token(request.args['code'])
-    return redirect(url_for('get_playlists'))
+    return redirect(url_for('main'))
 
-@app.route('/get_playlists') #Retrieves the users playlists from Spotify API.
-def get_playlists():
+@app.route('/main') #Retrieves the users playlists from Spotify API.
+def main():
     if not sp_oauth.validate_token(cache_handler.get_cached_token()): #if not logged in (checks if we have valid user token through cache handler)
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
@@ -66,7 +66,7 @@ def get_playlists():
     # # recommended tracks
     topTracks = sp.current_user_top_tracks(limit=5)
     trackIDList = [track['id'] for track in topTracks['items'][:5]]
-    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
+    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
     recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
     recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
     
@@ -78,14 +78,51 @@ def get_playlists():
                            recommendationsIDs = recommendationsIDs
                            )
 
+@app.route('/createCustomPlaylist', methods=['POST'])
+def createCustomPlaylist():
+    #genre variables
+    genres = sp.recommendation_genre_seeds()
+    genresList = [(genre) for genre in genres['genres']]
+    
+    #Select Genres
+    
+    #Select Favorite Artists
+
+    #Select Artists from Search
+
+    #Select songs from songs chosen through search
+
+    return render_template(
+        "createCustomPlaylist.html",
+        genresList = genresList
+    )
+
+@app.route('/createPlaylistGenres', methods=['POST'])
+def createPlaylistGenres():
+    if request.method == 'POST':
+        selected_options = request.form.getlist('Genre')
+        #how to grab genre seeds (or IDS) to put into recommendations function from selected_options list
+        recommendations = sp.recommendations(seed_genres=selected_options)
+        recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+        user = sp.current_user()
+        userID = user['id']
+        playlist = sp.user_playlist_create(user=userID, name="Genre Recommendation Playlist", public=False, collaborative=False, description="genre playlist thing")
+        playlistID = playlist['id']
+        # Add tracks to the playlist
+        try:
+            sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
+        except sp.SpotifyException as e:
+            return render_template('Error.html')
+        return redirect('/main') #maybe redirect to new playlist page?
+    
+
 @app.route('/createPlaylistRecommendations', methods=['POST'])
 def createPlaylistRecommendations():
     if request.method == 'POST':
-        # topTracks = sp.current_user_top_tracks(limit=5)
-        # trackIDList = [track['id'] for track in topTracks['items'][:5]]
-        # recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
-        # recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
-        recommendationsIDs = request.form.getlist('reccomendationIDs[]')
+        try:
+            recommendationsIDs = request.form.getlist('reccomendationIDs[]')
+        except sp.SpotifyException as e:
+            return render_template('Error.html')
         user = sp.current_user()
         userID = user['id']
         playlist = sp.user_playlist_create(user=userID, name="Your Recommendation Playlist", public=False, collaborative=False, description="all part of the grind")
@@ -95,7 +132,7 @@ def createPlaylistRecommendations():
             sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
         except sp.SpotifyException as e:
             return render_template('Error.html')
-        return redirect('/get_playlists') #maybe redirect to new playlist page?
+        return redirect('/main') #maybe redirect to new playlist page?
 
 @app.route('/logout') #Clears session data, effetively logging out the user, and redirects to the home page.
 def logout():
