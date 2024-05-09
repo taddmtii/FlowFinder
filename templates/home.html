@@ -7,36 +7,59 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <title>Spotify Web App</title>
     </head>
+    <!--NAVBAR-->
+    <navbar>
+        <div class="navbar bg-neutral text-neutral-content">
+            <button class="btn btn-ghost text-xl">PersonalizedMixApp</button>
+            <ul>
+                <li><a href="/main">Home</a></li>
+                <li><a href="/createCustomPlaylist">Create</a></li>
+              </ul>
+          </div>
+    </navbar>
+
     <body>
         <h1 class="text-2xl font-bold ">Welcome {{ displayName }}!</h1>
-        <h2>Here are your top 5 songs:</h2>
+        
 
+        <div class="card w-96 bg-white shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">Top 5 Songs</h2>
+                {% for artist, song in topTracks_info %}
+                   <p> {{ artist }}: {{ song }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    <div class="overflow-x-auto">
         <table class="table">
-            <tr>
-                <th>Artist</th>
-                <th>Song</th>
-            </tr>
-            <hr>
-            {% for artist, song in topTracks_info %}
-            <tr>
-                <td>{{ artist }}</td>
-                <td>{{ song }}</td>
-            </tr>
-            
-            {% endfor %}
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Artist</th>
+                    <th>Song</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for artist, song in topTracks_info %}
+                <tr>
+                    <td>{{ artist }}</td>
+                    <td>{{ song }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
         </table>
+    </div>
 
-        <h2>And here are your top artists:</h2>
+        <h2>Top artists:</h2>
         <table class="table">
             <tr>
                 <th>Artist</th>
-                <th>Genres</th>
             </tr>
             <hr>
             {% for name, genres in recentlyPlayed_info %}
             <tr>
                 <td>{{ name }}</td>
-                <td>{{ genres }}</td>
             </tr>
             {% endfor %}
         </table>
