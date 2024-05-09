@@ -53,10 +53,12 @@ def get_playlists():
     #get top artists and their genres
     recentlyPlayed = sp.current_user_top_artists(limit=5)
     recentlyPlayed_info = [(artist['name'], artist['genres']) for artist in recentlyPlayed['items']]
+    recentlyPlayedLength = len(recentlyPlayed_info)
 
     #get current users name for display
     user = sp.current_user()
     displayName = user['display_name']
+    userID = user['id']
 
     #top tracks
     topTracks = sp.current_user_top_tracks(limit=5)
@@ -64,7 +66,8 @@ def get_playlists():
 
     # recommended tracks
     trackIDList = [track['id'] for track in topTracks['items'][:5]]
-    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=10)
+    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
+    recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
     recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
 
     return render_template('home.html',
@@ -74,6 +77,23 @@ def get_playlists():
                            recommendations_info = recommendations_info
                            )
 
+@app.route('/createPlaylistRecommendations', methods=['POST'])
+def createPlaylistRecommendations():
+    if request.method == 'POST':
+        topTracks = sp.current_user_top_tracks(limit=5)
+        trackIDList = [track['id'] for track in topTracks['items'][:5]]
+        recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
+        recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+        user = sp.current_user()
+        userID = user['id']
+        playlist = sp.user_playlist_create(user=userID, name="Your Recommendation Playlist", public=False, collaborative=False, description="all part of the grind")
+        playlistID = playlist['id']
+        # Add tracks to the playlist
+        try:
+            sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
+        except sp.SpotifyException as e:
+            return render_template('Error.html')
+        return redirect('/get_playlists') #maybe redirect to new playlist page?
 
 @app.route('/logout') #Clears session data, effetively logging out the user, and redirects to the home page.
 def logout():

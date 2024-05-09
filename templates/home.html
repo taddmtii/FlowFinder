@@ -2,25 +2,36 @@
     <body>
         <h1>Hello {{ displayName }}!</h1>
         <h2>Here are your top 20 songs:</h2>
-        <table class="table">
+
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+
+        <table class="table" style="border: 1px solid black; border-radius: 10px; ">
             <tr>
                 <th>Artist</th>
                 <th>Song</th>
             </tr>
+            <hr>
             {% for artist, song in topTracks_info %}
             <tr>
                 <td>{{ artist }}</td>
                 <td>{{ song }}</td>
+                
             </tr>
+            
             {% endfor %}
         </table>
 
         <h2>And here are your top artists:</h2>
-        <table class="table">
+        <table class="table" style="border: 1px solid black; border-radius: 10px;">
             <tr>
                 <th>Artist</th>
                 <th>Genres</th>
             </tr>
+            <hr>
             {% for name, genres in recentlyPlayed_info %}
             <tr>
                 <td>{{ name }}</td>
@@ -30,11 +41,12 @@
         </table>
 
         <h2>Here are some recommendations:</h2>
-        <table class="table">
+        <table class="table" style="border: 1px solid black; border-radius: 10px;">
             <tr>
                 <th>Artist</th>
                 <th>Song</th>
             </tr>
+            <hr>
             {% for artist, song in recommendations_info %}
             <tr>
                 <td>{{ artist }}</td>
@@ -42,5 +54,9 @@
             </tr>
             {% endfor %}
         </table>
+
+        <form action="/createPlaylistRecommendations" method="post">
+            <button type="submit">Create Recommendations Playlist</button>
+        </form>
     </body>
 </html>

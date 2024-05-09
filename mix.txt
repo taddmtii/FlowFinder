@@ -46,3 +46,4 @@ Write to playlists:
 https://developer.spotify.com/documentation/web-api/reference/create-playlist
 
 - Create Playlist: Choose 5 genres, up to 5 of the top songs, 5 artists, OR pick an artist.
+- Show Stats
