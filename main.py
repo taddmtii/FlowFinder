@@ -53,7 +53,6 @@ def get_playlists():
     #get top artists and their genres
     recentlyPlayed = sp.current_user_top_artists(limit=5)
     recentlyPlayed_info = [(artist['name'], artist['genres']) for artist in recentlyPlayed['items']]
-    recentlyPlayedLength = len(recentlyPlayed_info)
 
     #get current users name for display
     user = sp.current_user()
@@ -64,26 +63,29 @@ def get_playlists():
     topTracks = sp.current_user_top_tracks(limit=5)
     topTracks_info = [(track['artists'][0]['name'], track['name']) for track in topTracks['items']]
 
-    # recommended tracks
+    # # recommended tracks
+    topTracks = sp.current_user_top_tracks(limit=5)
     trackIDList = [track['id'] for track in topTracks['items'][:5]]
     recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
     recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
     recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
-
+    
     return render_template('home.html',
                            topTracks_info = topTracks_info, 
                            displayName = displayName, 
                            recentlyPlayed_info = recentlyPlayed_info,
-                           recommendations_info = recommendations_info
+                           recommendations_info = recommendations_info,
+                           recommendationsIDs = recommendationsIDs
                            )
 
 @app.route('/createPlaylistRecommendations', methods=['POST'])
 def createPlaylistRecommendations():
     if request.method == 'POST':
-        topTracks = sp.current_user_top_tracks(limit=5)
-        trackIDList = [track['id'] for track in topTracks['items'][:5]]
-        recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
-        recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+        # topTracks = sp.current_user_top_tracks(limit=5)
+        # trackIDList = [track['id'] for track in topTracks['items'][:5]]
+        # recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20)
+        # recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+        recommendationsIDs = request.form.getlist('reccomendationIDs[]')
         user = sp.current_user()
         userID = user['id']
         playlist = sp.user_playlist_create(user=userID, name="Your Recommendation Playlist", public=False, collaborative=False, description="all part of the grind")

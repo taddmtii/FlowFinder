@@ -1,7 +1,7 @@
 <html>
     <body>
         <h1>Hello {{ displayName }}!</h1>
-        <h2>Here are your top 20 songs:</h2>
+        <h2>Here are your top 5 songs:</h2>
 
         <style>
             table, th, td {
@@ -9,7 +9,7 @@
             }
         </style>
 
-        <table class="table" style="border: 1px solid black; border-radius: 10px; ">
+        <table class="table" style="border-radius: 10px; ">
             <tr>
                 <th>Artist</th>
                 <th>Song</th>
@@ -55,8 +55,17 @@
             {% endfor %}
         </table>
 
+        <!-- <form action="/createPlaylistRecommendations" method="post">
+            <button type="submit">Create Recommendations Playlist</button>
+            <input type="hidden" name="recommendations_info" value="recommendations_info">
+        </form> -->
         <form action="/createPlaylistRecommendations" method="post">
+            <!-- Loop through recommendations_info and store each value in a hidden input field -->
+            {% for id in recommendationsIDs %}
+            <input type="hidden" name="reccomendationIDs[]" value="{{ id }}">
+            {% endfor %}
             <button type="submit">Create Recommendations Playlist</button>
         </form>
+        
     </body>
 </html>
