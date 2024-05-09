@@ -1,30 +1,49 @@
+<!DOCTYPE html>
 <html>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genre Selection</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="container">
         <form method="post" action="/createPlaylistGenres">
             <fieldset>
-            <h2>Pick up to 5 Genres</h2>
-                {% for genre in genresList %}
-                <input type="checkbox" name="Genre" value="{{genre}}" onclick="return handleGenres();"/> {{ genre }} <br />
-                {% endfor %}
-            <button type="submit">Create Playlist</button>
+                <legend><h2>Pick up to 5 Genres:</h2></legend>
+                <div class="flex gap-x-24 gap-y-8 flex-wrap">
+                    {% for category, genres in music_genres.items() %}
+                    <div>
+                        <label class="text-xl font-semibold" for="category">{{category}}</label>
+                        {% for genre in genres %}
+                        <div class="flex flex-row gap-x-2">
+                            <input type="checkbox" name="Genre" onclick="return handleGenres();" value="{{genre}}">
+                            <span>{{genre}}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-accent">Create Playlist</button>
             </fieldset>
         </form>
-        
-    <script type="text/javascript">
-    function handleGenres() {
-        var checkboxes = document.querySelectorAll('input[name="Genre"]')
-        var checkedItems = 0;
-        for(var i = 0; i < checkboxes.length; i++){
-            if(checkboxes[i].checked)
-                checkedItems++;
-        }
-        if(checkedItems > 5)
-        {
-            alert("You can not choose more than 5 genres, pick wisely!");
-            return false
-        }
-    }
-    </script>
-    </body>
-</html>
+    </div>
 
+    <script type="text/javascript">
+        function handleGenres() {
+            var checkboxes = document.querySelectorAll('input[name="Genre"]');
+            var checkedItems = 0;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked)
+                    checkedItems++;
+            }
+            if (checkedItems > 5) {
+                alert("You cannot choose more than 5 genres, pick wisely!");
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

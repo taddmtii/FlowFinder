@@ -30,6 +30,61 @@ sp_oauth = SpotifyOAuth(
 
 sp = Spotify(auth_manager=sp_oauth)
 
+music_genres = {
+    "Rock and its subgenres": [
+        "alt-rock", "grunge", "indie", "punk", "punk-rock", 
+        "rock", "rock-n-roll", "metal", "heavy-metal", "metal-misc", "metalcore"
+    ],
+    "Electronic": [
+        "ambient", "breakbeat", "chicago-house", "deep-house", "detroit-techno", 
+        "disco", "dub", "dubstep", "edm", "electro", "electronic", "house", 
+        "minimal-techno", "techno", "trance"
+    ],
+    "Pop and its variants": [
+        "pop", "pop-film", "power-pop", "synth-pop"
+    ],
+    "Hip Hop and Rap": [
+        "hip-hop"
+    ],
+    "Folk and Traditional": [
+        "acoustic", "folk", "singer-songwriter", "bluegrass", "country", "honky-tonk"
+    ],
+    "World Music": [
+        "afrobeat", "bossanova", "brazil", "forro", "mpb", "samba", 
+        "sertanejo", "latin", "latinom", "mandopop", "reggae", "reggaeton", 
+        "salsa", "tango", "turkish", "world-music"
+    ],
+    "Classical and Opera": [
+        "classical", "opera"
+    ],
+    "Jazz and Blues": [
+        "jazz", "blues"
+    ],
+    "R&B and Soul": [
+        "r-n-b", "soul"
+    ],
+    "Miscellaneous": [
+        "anime", "children", "comedy", "holidays", "movies", "new-age", 
+        "new-release", "show-tunes"
+    ],
+    "Moods and Themes": [
+        "chill", "happy", "rainy-day", "romance", "sad", "sleep", "study", "summer", 
+        "work-out"
+    ],
+    "Cultural and Language-Specific": [
+        "british", "french", "german", "iranian", "malay", "spanish", "swedish"
+    ],
+    "Experimental and Niche": [
+        "experimental", "goth", "grindcore", "industrial", "psych-rock", 
+        "post-dubstep", "trip-hop"
+    ],
+    "Miscellaneous Genres": [
+        "breakbeat", "cantopop", "comedy", "gospel", "happy", "party", "road-trip", 
+        "show-tunes", "workout"
+    ]
+}
+
+
 #Endpoints
 
 @app.route('/') #Redirects users to the authentication page if they are not logged in, and if they are it redirects to the getplaylists page.
@@ -81,9 +136,9 @@ def main():
 @app.route('/createCustomPlaylist', methods=['POST'])
 def createCustomPlaylist():
     #genre variables
-    genres = sp.recommendation_genre_seeds()
-    genresList = [(genre) for genre in genres['genres']]
-    
+    # genres = sp.recommendation_genre_seeds()
+    # genresList = [(genre) for genre in genres['genres']]
+
     #Select Genres
     
     #Select Favorite Artists
@@ -94,14 +149,14 @@ def createCustomPlaylist():
 
     return render_template(
         "createCustomPlaylist.html",
-        genresList = genresList
+        music_genres = music_genres
     )
 
 @app.route('/createPlaylistGenres', methods=['POST'])
 def createPlaylistGenres():
     if request.method == 'POST':
         selected_options = request.form.getlist('Genre')
-        #how to grab genre seeds (or IDS) to put into recommendations function from selected_options list
+        
         recommendations = sp.recommendations(seed_genres=selected_options)
         recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
         user = sp.current_user()
@@ -109,10 +164,7 @@ def createPlaylistGenres():
         playlist = sp.user_playlist_create(user=userID, name="Genre Recommendation Playlist", public=False, collaborative=False, description="genre playlist thing")
         playlistID = playlist['id']
         # Add tracks to the playlist
-        try:
-            sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
-        except sp.SpotifyException as e:
-            return render_template('Error.html')
+        sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
         return redirect('/main') #maybe redirect to new playlist page?
     
 

@@ -2,45 +2,13 @@
 <html lang="en-US">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.tailwindcss.com"></script>
         <title>Spotify Web App</title>
-        <!-- <link rel="stylesheet" href="templates/styles.css"> -->
     </head>
-    <style>
-        table {
-            margin: 1em auto; /* Center the table */
-            border-collapse: collapse; /* Collapse table borders */
-            border: 2px solid #ddd; /* Set border color and thickness */
-            width: 80%; /* Adjust table width */
-        }
-
-        /* Apply styles to table headers */
-        th {
-            background-color: #f2f2f2; /* Set background color for header */
-            border: 2px solid #ddd; /* Set border color and thickness */
-            padding: 8px; /* Add padding */
-            text-align: left; /* Align text to the left */
-        }
-
-        /* Apply styles to table cells */
-        td {
-            border: 2px solid #ddd; /* Set border color and thickness */
-            padding: 8px; /* Add padding */
-            text-align: left; /* Align text to the left */
-        }
-
-        /* Apply alternate background color to table rows */
-        tr:nth-child(even) {
-            background-color: #f2f2f2; /* Set background color */
-        }
-
-        /* Apply hover effect to table rows */
-        tr:hover {
-            background-color: #ddd; /* Change background color on hover */
-        }
-    </style>
-
     <body>
-        <h1>Hello {{ displayName }}!</h1>
+        <h1 class="text-2xl font-bold ">Welcome {{ displayName }}!</h1>
         <h2>Here are your top 5 songs:</h2>
 
         <table class="table">
@@ -53,7 +21,6 @@
             <tr>
                 <td>{{ artist }}</td>
                 <td>{{ song }}</td>
-                
             </tr>
             
             {% endfor %}
@@ -93,15 +60,15 @@
             {% for id in recommendationsIDs %}
             <input type="hidden" name="reccomendationIDs[]" value="{{ id }}">
             {% endfor %}
-            <button type="submit">Create Recommendations Playlist</button>
+            <button type="submit" class="btn btn-accent">Create Recommendations Playlist</button>
         </form>
         <form action="/main" method="get">
-            <button type="submit">Refresh</button>
+            <button type="submit" class="btn btn-accent">Refresh</button>
         </form>
         
         <h2>Want to Generate a Custom Playlist?</h2>
         <form action="/createCustomPlaylist" method="post">
-            <button type="submit">Lets Go!</button>
+            <button type="submit" class="btn btn-accent">Lets Go!</button>
 
         </form>
     </body>
