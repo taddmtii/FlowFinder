@@ -15,7 +15,7 @@
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                 </div>
-                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
                   <li><a href="/home">Homepage</a></li>
                   <li><a href="/main">Stats</a></li>
                   <li><a href="/createCustomPlaylist">Create</a></li>
@@ -29,16 +29,6 @@
     </navbar>
 
     <body>
-        <div class="m-auto card w-fit bg-base-300 shadow-xl image-full">
-            <figure><img src="{{ userProfilePicture }}" alt="pfp" /></figure>
-            <div class="card-body">
-                <h2 class="card-title m-auto">Welcome {{ displayName }}!</h2>
-                <p></p>
-              <div class="card-actions justify-end">
-                <button class="btn btn-primary"><a href="{{ userUrl }}">Go To Profile</a></button>
-              </div>
-            </div>
-          </div>
 
         <div class="flex gap-8 justify-center p-8">
             <div>
@@ -57,6 +47,20 @@
                     </div>
                 </div>
             </div>
+
+        <!-- Welcome Card -->
+        <div class="flex flex-col gap-y-8">
+            <div class="m-auto my-0 card w-96 h-72 bg-base-300 shadow-xl image-full">
+                <figure><img class="object-fill w-96" src="{{ userProfilePicture }}" alt="pfp" /></figure>  
+                <div class="card-body">
+                    <h2 class="card-title m-auto">Welcome {{ displayName }}!</h2>
+                    <p></p>
+                  <div class="card-actions justify-end">
+                    <button class="btn btn-primary"><a href="{{ userUrl }}">Go To Profile</a></button>
+                  </div>
+                </div>
+            </div>
+
             <div>
                 <div class="card w-96 bg-base-300 shadow-xl">
                     <div class="card-body">
@@ -72,6 +76,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
             <div>
                 <div class="card w-96 bg-base-300 shadow-xl">
