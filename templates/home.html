@@ -16,8 +16,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                 </div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
-                  <li><a href="/home">Homepage</a></li>
-                  <li><a href="/main">Stats</a></li>
+                  <li><a href="/main">Home</a></li>
                   <li><a href="/createCustomPlaylist">Create</a></li>
                 </ul>
               </div>
@@ -25,7 +24,10 @@
             <div class="flex justify-center items-align">
               <a class="btn btn-ghost text-xl">PersonalizedMixApp</a>
             </div>
+            <div class="flex">
+                <a class="btn btn-ghost text-xl absolute right-0" href="/logout">Logout</a>
             </div>
+        </div>
     </navbar>
 
     <body>
@@ -115,7 +117,6 @@
         <form action="/main" method="get">
             <button type="submit" class="btn btn-accent">Refresh</button>
         </form>
-        
         <h2>Want to Generate a Custom Playlist?</h2>
         <form action="/createCustomPlaylist" method="post">
             <button type="submit" class="btn btn-accent">Lets Go!</button>

@@ -16,7 +16,7 @@ client_secret = os.getenv("client_secret") #get enrionment variable client_secre
 redirect_uri = "http://localhost:5000/callback" #redirect url
 scope = "playlist-read-private, playlist-read-collaborative, user-top-read, user-read-recently-played \
          playlist-modify-private, playlist-modify-public, user-library-modify, user-library-read \
-         streaming" #gets back users private playlists, we will need more than one scope
+         streaming, user-read-currently-playing, user-read-playback-state" #gets back users private playlists, we will need more than one scope
 
 cache_handler = FlaskSessionCacheHandler(session) # stores token in current flask session
 sp_oauth = SpotifyOAuth(
@@ -147,21 +147,20 @@ def main():
 @app.route('/createCustomPlaylist', methods=['POST'])
 def createCustomPlaylist():
     #genre variables
-    # genres = sp.recommendation_genre_seeds()
-    # genresList = [(genre) for genre in genres['genres']]
 
     #Select Genres
     
     #Select Favorite Artists
 
     #Select Artists from Search
-
+    #https://developer.spotify.com/documentation/web-api/reference/search
+    
     #Select songs from songs chosen through search
-
-    return render_template(
-        "createCustomPlaylist.html",
-        music_genres = music_genres
-    )
+    if request.method == 'POST':     
+        return render_template(
+            "createCustomPlaylist.html",
+            music_genres = music_genres
+        )
 
 @app.route('/createPlaylistGenres', methods=['POST'])
 def createPlaylistGenres():
