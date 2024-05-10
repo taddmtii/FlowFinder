@@ -114,10 +114,11 @@ def main():
     user = sp.current_user()
     displayName = user['display_name']
     userID = user['id']
-
+    userProfilePicture = user['images'][1]['url']
+    userUrl = user['external_urls']['spotify']
     #top tracks
     topTracks = sp.current_user_top_tracks(limit=10)
-    topTracks_info = [(track['artists'][0]['name'], track['name']) for track in topTracks['items']]
+    topTracks_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in topTracks['items']]
 
     # # recommended tracks
     topTracks = sp.current_user_top_tracks(limit=5)
@@ -131,7 +132,9 @@ def main():
                            displayName = displayName, 
                            recentlyPlayed_info = recentlyPlayed_info,
                            recommendations_info = recommendations_info,
-                           recommendationsIDs = recommendationsIDs
+                           recommendationsIDs = recommendationsIDs,
+                           userProfilePicture = userProfilePicture,
+                           userUrl = userUrl
                            )
 
 @app.route('/createCustomPlaylist', methods=['POST'])
