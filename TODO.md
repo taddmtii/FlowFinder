@@ -5,14 +5,14 @@ VibeCheck
 
 Features (Goals):
 
--[X] User Authentication (Spotify).
--[] Users can choose a genre/s, potential activity, favorite artists etc...
--[] Make generated playlists based off of criteria.
--[] Recommend new songs to current playlists.
--[] Show users most played genre, artists and songs.
--[X] Import playlists to spotify account.
--[] Ability to favorite generated playlists.
--[] Remove all tracks from a certain artist? (POTENTIALLY WOULD BE COOL)
+- User Authentication (Spotify).
+- Users can choose a genre/s, mood, potential activity, favorite artists etc...
+- Make generated playlists based off of criteria.
+- Recommend new songs to current playlists.
+- Show users most played genre, artists and songs.
+- Import playlists to spotify account.
+- Ability to favorite generated playlists.
+- Remove all tracks from a certain artist? (POTENTIALLY WOULD BE COOL)
 
 Documentation Notes:
 
@@ -47,3 +47,9 @@ https://developer.spotify.com/documentation/web-api/reference/create-playlist
 
 - Create Playlist: Choose 5 genres, up to 5 of the top songs, 5 artists, OR pick an artist.
 - Show Stats
+
+HOME PAGE (main): SHOW STATS, Profile Information
+CREATE: Create Playlist based off of:
+    - Top 20-50 songs
+    - Recommendations (Based off top 5 songs, up to 5 genres)
+    - Recently Played

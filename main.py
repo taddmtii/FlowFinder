@@ -107,8 +107,8 @@ def main():
         return redirect(auth_url)
     
     #get top artists and their genres
-    recentlyPlayed = sp.current_user_top_artists(limit=5)
-    recentlyPlayed_info = [(artist['name'], artist['genres']) for artist in recentlyPlayed['items']]
+    topArtists = sp.current_user_top_artists(limit=5)
+    topArtists_info = [(artist['images'][0]['url'], artist['name']) for artist in topArtists['items']]
 
     #get current users name for display
     user = sp.current_user()
@@ -116,6 +116,12 @@ def main():
     userID = user['id']
     userProfilePicture = user['images'][1]['url']
     userUrl = user['external_urls']['spotify']
+
+    #Recently Played songs
+    recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
+    recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
+
+
     #top tracks
     topTracks = sp.current_user_top_tracks(limit=10)
     topTracks_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in topTracks['items']]
@@ -130,7 +136,8 @@ def main():
     return render_template('home.html',
                            topTracks_info = topTracks_info, 
                            displayName = displayName, 
-                           recentlyPlayed_info = recentlyPlayed_info,
+                           topArtists_info = topArtists_info,
+                           recentlyPlayedTracks_info = recentlyPlayedTracks_info,
                            recommendations_info = recommendations_info,
                            recommendationsIDs = recommendationsIDs,
                            userProfilePicture = userProfilePicture,
