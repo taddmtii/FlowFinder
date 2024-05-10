@@ -94,6 +94,7 @@ def home():
         return redirect(auth_url)
     return redirect(url_for('main'))
 
+
 @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
 def callback():
     sp_oauth.get_access_token(request.args['code'])
@@ -115,7 +116,7 @@ def main():
     userID = user['id']
 
     #top tracks
-    topTracks = sp.current_user_top_tracks(limit=5)
+    topTracks = sp.current_user_top_tracks(limit=10)
     topTracks_info = [(track['artists'][0]['name'], track['name']) for track in topTracks['items']]
 
     # # recommended tracks
