@@ -56,6 +56,12 @@
                     {% endfor %}
                 </div>
             </div>
+            <form action="/createRecomendationsPlaylistFORM" method="post">
+                {% for id in recommendationsIDs %}
+                <input type="hidden" name="recommendationsIDs[]" value="{{ id }}">
+                {% endfor %}
+                <button type="submit" class="btn btn-accent">Create Recommendations Playlist ({{ num_songs }})</button>
+            </form>
         </div>
     </div>
 </body>

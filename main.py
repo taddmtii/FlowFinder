@@ -183,7 +183,8 @@ def createRecommendationsPlaylist():
 
     return render_template('createRecommendationsPlaylist.html',
                         recommendations_info = recommendations_info,
-                        recommendationsIDs = recommendationsIDs
+                        recommendationsIDs = recommendationsIDs,
+                        num_songs = num_songs
                            )
 
 #Handles Form Submission (button) for creating a RECCOMENDATIONS Playlist
