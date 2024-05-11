@@ -121,8 +121,15 @@ def main():
     recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
     recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
 
+    #Currently playing song / NOT iterable, only one result.
+    currentlyPlaying = sp.current_user_playing_track()
+    album_cover_url = currentlyPlaying['item']['album']['images'][0]['url']
+    artist_name = currentlyPlaying['item']['artists'][0]['name']
+    song_name = currentlyPlaying['item']['name']
+    currentlyPlaying_info = [album_cover_url, artist_name, song_name]
 
     #top tracks
+
     topTracks = sp.current_user_top_tracks(limit=10)
     topTracks_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in topTracks['items']]
 
@@ -141,7 +148,8 @@ def main():
                            recommendations_info = recommendations_info,
                            recommendationsIDs = recommendationsIDs,
                            userProfilePicture = userProfilePicture,
-                           userUrl = userUrl
+                           userUrl = userUrl,
+                           currentlyPlaying_info = currentlyPlaying_info
                            )
 
 @app.route('/createCustomPlaylist', methods=['POST'])
