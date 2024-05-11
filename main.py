@@ -150,12 +150,6 @@ def main():
 
 @app.route('/createCustomPlaylist', methods=['POST', 'GET'])
 def createCustomPlaylist():
-    # recommended tracks
-    topTracks = sp.current_user_top_tracks(limit=5)
-    trackIDList = [track['id'] for track in topTracks['items'][:5]]
-    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
-    recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
-    recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
 
     #Select Artists from Search
     #https://developer.spotify.com/documentation/web-api/reference/search
@@ -165,9 +159,23 @@ def createCustomPlaylist():
         return render_template(
             "createCustomPlaylist.html",
             music_genres = music_genres,
-            recommendations_info = recommendations_info,
-            recommendationsIDs = recommendationsIDs
         )
+
+@app.route('/createRecommendationsPlaylist', methods=['POST', 'GET'])
+def createRecommendationsPlaylist():
+
+    # recommended tracks
+    topTracks = sp.current_user_top_tracks(limit=5)
+    trackIDList = [track['id'] for track in topTracks['items'][:5]]
+    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
+    recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+    recommendations_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
+
+
+    return render_template('createRecommendationsPlaylist.html',
+                            recommendations_info = recommendations_info,
+                            recommendationsIDs = recommendationsIDs
+                           )
 
 #Page that shows genre form, upon submission we redirect to createPlaylistgenres endpoint
 @app.route('/createPlaylistGenre')
@@ -175,7 +183,7 @@ def createPlaylistGenre():
     return render_template('createPlaylistGenre.html')
 
 #Handles Form Submission for Creating a GENRE playlist.
-@app.route('/createPlaylistGenres', methods=['POST', 'GET'])
+@app.route('/createPlaylistGenres', methods=['POST'])
 def createPlaylistGenres():
     if request.method == 'POST':
         selected_options = request.form.getlist('Genre')
