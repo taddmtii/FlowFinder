@@ -30,6 +30,7 @@ sp_oauth = SpotifyOAuth(
 
 sp = Spotify(auth_manager=sp_oauth)
 
+#global variables
 music_genres = {
     "Rock and its subgenres": [
         "alt-rock", "grunge", "indie", "punk", "punk-rock", 
@@ -89,11 +90,14 @@ music_genres = {
 
 @app.route('/') #Redirects users to the authentication page if they are not logged in, and if they are it redirects to the getplaylists page.
 def home():
+    return render_template('homeNoAuth.html')
+
+@app.route('/login')
+def login():
     if not sp_oauth.validate_token(cache_handler.get_cached_token()): #if not logged in (checks if we have valid user token through cache handler)
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
     return redirect(url_for('main'))
-
 
 @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
 def callback():
