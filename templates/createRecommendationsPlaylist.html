@@ -34,13 +34,12 @@
 
 <body>
     <div class="flex flex-row"> 
-        <!--Create Playlist based off spotifys recommendations-->
-        <!--Recommendations based on your 5 top songs-->
+        <!--20 Songs-->
         <div>
             <div class="card w-96 bg-base-300 shadow-xl">
                 <div class="card-body">
-                    <h2 class="m-auto card-title font-bold text-white pb-6">Our Reccomendations Playlist</h2>
-                    {% for cover, artist, song in recommendations_info %}
+                    <h2 class="m-auto card-title font-bold text-white pb-6">Our Recomendations Playlist (20)</h2>
+                    {% for cover, artist, song in recommendations20_info %}
                     <div class="flex gap-4">
                         <img src="{{ cover }}" class="w-16 h-16 rounded-lg" alt="cover" />
                         <div class="flex flex-col">
@@ -51,19 +50,60 @@
                     {% endfor %}
                 </div>
             </div>
-            <form action="/createReccomendationsPlaylistFORM" method="post">
-                {% for id in recommendationsIDs %}
-                <input type="hidden" name="reccomendationIDs[]" value="{{ id }}">
+            <form action="/createRecomendationsPlaylistFORM" method="post">
+                {% for id in recommendations20IDs %}
+                <input type="hidden" name="recommendationsIDs[]" value="{{ id }}">
                 {% endfor %}
-                <button type="submit" class="btn btn-accent">Create Recommendations Playlist</button>
+                <button type="submit" class="btn btn-accent">Create Recommendations Playlist (20)</button>
             </form>
         </div>
-    
-    
-
-
+        <!--50 Songs-->
+        <div>
+            <div class="card w-96 bg-base-300 shadow-xl">
+                <div class="card-body">
+                    <h2 class="m-auto card-title font-bold text-white pb-6">Our Recomendations Playlist (50)</h2>
+                    {% for cover, artist, song in recommendations50_info %}
+                    <div class="flex gap-4">
+                        <img src="{{ cover }}" class="w-16 h-16 rounded-lg" alt="cover" />
+                        <div class="flex flex-col">
+                            <p class="text-lg text-white font-medium">{{ song }}</p>
+                            <p>{{ artist }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <form action="/createRecomendationsPlaylistFORM" method="post">
+                {% for id in recommendations50IDs %}
+                <input type="hidden" name="recommendationsIDs[]" value="{{ id }}">
+                {% endfor %}
+                <button type="submit" class="btn btn-accent">Create Recommendations Playlist (50)</button>
+            </form>
+        </div>
+        <!--100 Songs-->
+        <div>
+            <div class="card w-96 bg-base-300 shadow-xl">
+                <div class="card-body">
+                    <h2 class="m-auto card-title font-bold text-white pb-6">Our Recomendations Playlist (100)</h2>
+                    {% for cover, artist, song in recommendations100_info %}
+                    <div class="flex gap-4">
+                        <img src="{{ cover }}" class="w-16 h-16 rounded-lg" alt="cover" />
+                        <div class="flex flex-col">
+                            <p class="text-lg text-white font-medium">{{ song }}</p>
+                            <p>{{ artist }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <form action="/createRecomendationsPlaylistFORM" method="post">
+                {% for id in recommendations100IDs %}
+                <input type="hidden" name="recommendationsIDs[]" value="{{ id }}">
+                {% endfor %}
+                <button type="submit" class="btn btn-accent">Create Recommendations Playlist (100)</button>
+            </form>
+        </div>
 
     </div>
-
 </body>
 </html>
