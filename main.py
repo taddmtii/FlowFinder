@@ -174,27 +174,16 @@ def createTopTracksPlaylistFORM():
 @app.route('/createRecommendationsPlaylist', methods=['GET'])
 def createRecommendationsPlaylist():
     # recommended tracks
+    num_songs = request.args.get('num_songs', default=20, type=int)
     topTracks = sp.current_user_top_tracks(limit=5)
     trackIDList = [track['id'] for track in topTracks['items'][:5]]
-    recommendations20 = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
-    recommendations20IDs = [(track['id'])for track in recommendations20['tracks']]
-    recommendations20_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in recommendations20['tracks']]
-
-    recommendations50 = sp.recommendations(seed_tracks=trackIDList, limit=50) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 50
-    recommendations50IDs = [(track['id'])for track in recommendations50['tracks']]
-    recommendations50_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in recommendations50['tracks']]
-
-    recommendations100 = sp.recommendations(seed_tracks=trackIDList, limit=100) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 100
-    recommendations100IDs = [(track['id'])for track in recommendations100['tracks']]
-    recommendations100_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in recommendations100['tracks']]
+    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=num_songs) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
+    recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+    recommendations_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
 
     return render_template('createRecommendationsPlaylist.html',
-                        recommendations20_info = recommendations20_info,
-                        recommendations20IDs = recommendations20IDs,
-                        recommendations50_info = recommendations50_info,
-                        recommendations50IDs = recommendations50IDs,
-                        recommendations100_info = recommendations100_info,
-                        recommendations100IDs = recommendations100IDs
+                        recommendations_info = recommendations_info,
+                        recommendationsIDs = recommendationsIDs
                            )
 
 #Handles Form Submission (button) for creating a RECCOMENDATIONS Playlist
