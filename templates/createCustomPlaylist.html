@@ -8,6 +8,30 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
+<!--NAVBAR-->
+<navbar>
+    <div class="flex justify-center bg-base-100">
+        <div>
+        <div class="dropdown absolute left-0">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
+            <li><a href="/main">Home</a></li>
+            <li><a href="/createCustomPlaylist">Create</a></li>
+            </ul>
+        </div>
+        </div>
+        <div class="flex justify-center items-align">
+        <a class="btn btn-ghost text-xl">PersonalizedMixApp</a>
+        </div>
+        <div class="flex">
+            <a class="btn btn-ghost text-xl absolute right-0" href="/logout">Logout</a>
+        </div>
+    </div>
+</navbar>
+
 <body>
 
     <div> 
@@ -29,43 +53,5 @@
     <button type="submit" class="btn btn-accent">Create Recommendations Playlist</button>
 </form>
 
-    <!-- <div class="container">
-        <form method="post" action="/createPlaylistGenres">
-            <fieldset>
-                <legend><h2>Pick up to 5 Genres:</h2></legend>
-                <div class="flex gap-x-24 gap-y-8 flex-wrap">
-                    {% for category, genres in music_genres.items() %}
-                    <div>
-                        <label class="text-xl font-semibold" for="category">{{category}}</label>
-                        {% for genre in genres %}
-                        <div class="flex flex-row gap-x-2">
-                            <input type="checkbox" name="Genre" onclick="return handleGenres();" value="{{genre}}">
-                            <span>{{genre}}</span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endfor %}
-                </div>
-                <button type="submit" class="btn btn-accent">Create Playlist</button>
-            </fieldset>
-        </form>
-    </div>
-
-    
-
-    <script type="text/javascript">
-        function handleGenres() {
-            var checkboxes = document.querySelectorAll('input[name="Genre"]');
-            var checkedItems = 0;
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked)
-                    checkedItems++;
-            }
-            if (checkedItems > 5) {
-                alert("You cannot choose more than 5 genres, pick wisely!");
-                return false;
-            }
-        }
-    </script> -->
 </body>
 </html>

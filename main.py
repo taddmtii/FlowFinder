@@ -146,7 +146,7 @@ def main():
 
 @app.route('/createCustomPlaylist', methods=['POST', 'GET'])
 def createCustomPlaylist():
-    # # recommended tracks
+    # recommended tracks
     topTracks = sp.current_user_top_tracks(limit=5)
     trackIDList = [track['id'] for track in topTracks['items'][:5]]
     recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
@@ -165,11 +165,16 @@ def createCustomPlaylist():
             recommendationsIDs = recommendationsIDs
         )
 
-@app.route('/createPlaylistGenres', methods=['POST'])
+#Page that shows genre form, upon submission we redirect to createPlaylistgenres endpoint
+@app.route('/createPlaylistGenre')
+def createPlaylistGenre():
+    return render_template('createPlaylistGenre.html')
+
+#Handles Form Submission for Creating a GENRE playlist.
+@app.route('/createPlaylistGenres', methods=['POST', 'GET'])
 def createPlaylistGenres():
     if request.method == 'POST':
         selected_options = request.form.getlist('Genre')
-
         recommendations = sp.recommendations(seed_genres=selected_options)
         recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
         user = sp.current_user()
@@ -180,7 +185,7 @@ def createPlaylistGenres():
         sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
         return redirect('/main') #maybe redirect to new playlist page?
     
-
+#Handles Form Submission (button) for creating a RECCOMENDATIONS Playlist
 @app.route('/createPlaylistRecommendations', methods=['POST'])
 def createPlaylistRecommendations():
     if request.method == 'POST':
