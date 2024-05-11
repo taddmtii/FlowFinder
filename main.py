@@ -160,9 +160,24 @@ def createCustomPlaylist():
             music_genres = music_genres,
         )
 
-@app.route('/createRecommendationsPlaylist', methods=['POST', 'GET'])
-def createRecommendationsPlaylist():
+@app.route('/createRecentlyPlayedPlaylist', methods=['GET'])
+def createRecentlyPlayedPlaylist():
+    return render_template('createRecentlyPlayedPlaylist.html')
 
+@app.route('/createRecentlyPlayedPlaylistFORM', methods=['POST'])
+def createRecentlyPlayedPlaylistFORM():
+    return 'YEP THIS IS SUPPOSED TO BE A FORM'
+
+@app.route('/createTopTracksPlaylist', methods=['GET'])
+def createTopTracksPlaylist():
+    return render_template('createTopTracksPlaylist.html')
+
+@app.route('/createTopTracksPlaylistFORM', methods=['POST'])
+def createTopTracksPlaylistFORM():
+    return 'YEP THIS IS SUPPOSED TO BE A FORM'
+
+@app.route('/createRecommendationsPlaylist', methods=['GET'])
+def createRecommendationsPlaylist():
     # recommended tracks
     topTracks = sp.current_user_top_tracks(limit=5)
     trackIDList = [track['id'] for track in topTracks['items'][:5]]
@@ -175,8 +190,8 @@ def createRecommendationsPlaylist():
                            )
 
 #Handles Form Submission (button) for creating a RECCOMENDATIONS Playlist
-@app.route('/createReccomendationsPlaylistFORM', methods=['POST'])
-def createReccomendationsPlaylistFORM():
+@app.route('/createRecomendationsPlaylistFORM', methods=['POST'])
+def createRecomendationsPlaylistFORM():
     if request.method == 'POST':
         try:
             recommendationsIDs = request.form.getlist('reccomendationIDs[]')
@@ -195,7 +210,7 @@ def createReccomendationsPlaylistFORM():
     
 
 #Page that shows genre form, upon submission we redirect to createPlaylistgenres endpoint
-@app.route('/createPlaylistGenre')
+@app.route('/createPlaylistGenre', methods=['GET'])
 def createPlaylistGenre():
     return render_template('createPlaylistGenre.html')
 

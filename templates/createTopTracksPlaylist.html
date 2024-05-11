@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>Spotify Web App</title>
+    </head>
+    <!--NAVBAR-->
+    <navbar>
+          <div class="flex justify-center bg-base-100">
+            <div>
+              <div class="dropdown absolute left-0">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
+                  <li><a href="/main">Home</a></li>
+                  <li><a href="/createCustomPlaylist">Create</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex justify-center items-align">
+              <a class="btn btn-ghost text-xl">PersonalizedMixApp</a>
+            </div>
+            <div class="flex">
+                <a class="btn btn-ghost text-xl absolute right-0" href="/logout">Logout</a>
+            </div>
+        </div>
+    </navbar>
+
+</html>
