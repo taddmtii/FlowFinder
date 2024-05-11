@@ -150,14 +150,9 @@ def main():
 
 @app.route('/createCustomPlaylist', methods=['POST', 'GET'])
 def createCustomPlaylist():
-    #Select Artists from Search
-    #https://developer.spotify.com/documentation/web-api/reference/search
-    
-    #Select songs from songs chosen through search
     if request.method == 'GET':     
         return render_template(
-            "createCustomPlaylist.html",
-            music_genres = music_genres,
+            "createCustomPlaylist.html"
         )
 
 @app.route('/createRecentlyPlayedPlaylist', methods=['GET'])
@@ -229,8 +224,6 @@ def createPlaylistGenreFORM():
         sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
         return redirect('/main') #maybe redirect to new playlist page?
     
-
-
 @app.route('/logout') #Clears session data, effetively logging out the user, and redirects to the home page.
 def logout():
     session.clear()
