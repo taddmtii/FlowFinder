@@ -32,29 +32,32 @@
     </div>
 </navbar>
 
-<body>
-    <div class="flex flex-row"> 
-        <div>
-            <div class="card w-96 bg-base-300 shadow-xl">
-                <div class="card-body">
-                    <h2 class="m-auto card-title font-bold text-white pb-6">Our Recommendations Playlist</h2>
-                    <!-- Add a form for user input -->
-                    <form action="/createRecommendationsPlaylist" method="get">
-                        <label for="num_songs">Number of Songs:</label>
-                        <input type="number" id="num_songs" name="num_songs" min="1" max="100" value="20">
-                        <button type="submit" class="btn btn-accent">Generate Recommendations</button>
-                    </form>
-                    <!-- Display the recommended songs -->
+<div> 
+    <div>
+        <div class="card w-fill bg-base-300 shadow-xl">
+            <div class="card-body">
+                <h2 class="m-auto card-title font-bold text-white pb-6">Recommendations, just for you.</h2>
+                <!-- Add a form for user input -->
+                <form action="/createRecommendationsPlaylist" method="get">
+                    <div class="label">
+                        <span for="num_songs" class="label-text">Number of Songs?</span>
+                    </div>
+                    <input type="number" class="input input-bordered input-accent w-full max-w-xs" id="num_songs" name="num_songs" min="1" max="100" value="20">
+                    <button type="submit" class="btn btn-accent">Generate Recommendations</button>
+                </form>
+                <!-- Display the recommended songs -->
+                <div class="flex flex-wrap gap-4">
                     {% for cover, artist, song in recommendations_info %}
-                    <div class="flex gap-4">
+                    <div class="flex flex-col bg-base-300 rounded-lg shadow-xl p-4 w-64">
                         <img src="{{ cover }}" class="w-16 h-16 rounded-lg" alt="cover" />
-                        <div class="flex flex-col">
-                            <p class="text-lg text-white font-medium">{{ song }}</p>
-                            <p>{{ artist }}</p>
+                        <div class="flex flex-col mt-2">
+                            <p class="text-lg text-white font-medium overflow-hidden whitespace-nowrap overflow-ellipsis">{{ song }}</p>
+                            <p class="overflow-hidden whitespace-nowrap overflow-ellipsis">{{ artist }}</p>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
+                
             </div>
             <form action="/createRecomendationsPlaylistFORM" method="post">
                 {% for id in recommendationsIDs %}
@@ -64,5 +67,6 @@
             </form>
         </div>
     </div>
+</div>
 </body>
 </html>
