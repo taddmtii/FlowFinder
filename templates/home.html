@@ -95,7 +95,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!--Currently Playing-->
             <div class="fixed bottom-4 right-4 z-10">
                 <div class="card bg-base-300 shadow-xl w-80">
@@ -104,38 +104,13 @@
                         <div class="flex items-center space-x-4">
                             <img src="{{ currentlyPlaying_info[0] }}" class="w-16 h-16 rounded-lg" alt="cover" />
                             <div class="flex flex-col">
-                                <p class="text-lg text-white font-medium">{{ currentlyPlaying_info[1] }}</p>
-                                <p>{{ currentlyPlaying_info[2] }}</p>
+                                <p class="text-lg text-white font-medium">{{ currentlyPlaying_info[2] }}</p>
+                                <p>{{ currentlyPlaying_info[1] }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- <div>
-                <div class="card w-96 bg-base-300 shadow-xl">
-                    <div class="card-body">
-                        <h2 class="card-title">Recommendations based on your 5 songs</h2>
-                        {% for artist, song in recommendations_info %}
-                        <p>{{ artist }}: {{ song }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <form action="/createPlaylistRecommendations" method="post">
-            {% for id in recommendationsIDs %}
-            <input type="hidden" name="reccomendationIDs[]" value="{{ id }}">
-            {% endfor %}
-            <button type="submit" class="btn btn-accent">Create Recommendations Playlist</button>
-        </form>
-        <form action="/main" method="get">
-            <button type="submit" class="btn btn-accent">Refresh</button>
-        </form>
-        <h2>Want to Generate a Custom Playlist?</h2>
-        <form action="/createCustomPlaylist" method="post">
-            <button type="submit" class="btn btn-accent">Lets Go!</button>
-
-        </form> -->
     </body>
 </html>

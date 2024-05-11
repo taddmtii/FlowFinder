@@ -120,61 +120,56 @@ def main():
     #Recently Played songs
     recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
     recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
-
+    currentlyPlaying_info = ['', '', '']
     #Currently playing song / NOT iterable, only one result.
     currentlyPlaying = sp.current_user_playing_track()
-    album_cover_url = currentlyPlaying['item']['album']['images'][0]['url']
-    artist_name = currentlyPlaying['item']['artists'][0]['name']
-    song_name = currentlyPlaying['item']['name']
-    currentlyPlaying_info = [album_cover_url, artist_name, song_name]
+    if currentlyPlaying is not None:
+        currentlyPlaying = sp.current_user_playing_track()
+        album_cover_url = currentlyPlaying['item']['album']['images'][0]['url']
+        artist_name = currentlyPlaying['item']['artists'][0]['name']
+        song_name = currentlyPlaying['item']['name']
+        currentlyPlaying_info = [album_cover_url, artist_name, song_name]
 
     #top tracks
-
     topTracks = sp.current_user_top_tracks(limit=10)
     topTracks_info = [(track['album']['images'][0]['url'], track['artists'][0]['name'], track['name']) for track in topTracks['items']]
-
-    # # recommended tracks
-    topTracks = sp.current_user_top_tracks(limit=5)
-    trackIDList = [track['id'] for track in topTracks['items'][:5]]
-    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
-    recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
-    recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
     
     return render_template('home.html',
                            topTracks_info = topTracks_info, 
                            displayName = displayName, 
                            topArtists_info = topArtists_info,
                            recentlyPlayedTracks_info = recentlyPlayedTracks_info,
-                           recommendations_info = recommendations_info,
-                           recommendationsIDs = recommendationsIDs,
                            userProfilePicture = userProfilePicture,
                            userUrl = userUrl,
                            currentlyPlaying_info = currentlyPlaying_info
                            )
 
-@app.route('/createCustomPlaylist', methods=['POST'])
+@app.route('/createCustomPlaylist', methods=['POST', 'GET'])
 def createCustomPlaylist():
-    #genre variables
-
-    #Select Genres
-    
-    #Select Favorite Artists
+    # # recommended tracks
+    topTracks = sp.current_user_top_tracks(limit=5)
+    trackIDList = [track['id'] for track in topTracks['items'][:5]]
+    recommendations = sp.recommendations(seed_tracks=trackIDList, limit=20) #RECOMMENDATIONS ARE BASED OFF OF TOP 5 TRACKS, GENERATES 20
+    recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
+    recommendations_info = [(track['artists'][0]['name'], track['name']) for track in recommendations['tracks']]
 
     #Select Artists from Search
     #https://developer.spotify.com/documentation/web-api/reference/search
     
     #Select songs from songs chosen through search
-    if request.method == 'POST':     
+    if request.method == 'GET':     
         return render_template(
             "createCustomPlaylist.html",
-            music_genres = music_genres
+            music_genres = music_genres,
+            recommendations_info = recommendations_info,
+            recommendationsIDs = recommendationsIDs
         )
 
 @app.route('/createPlaylistGenres', methods=['POST'])
 def createPlaylistGenres():
     if request.method == 'POST':
         selected_options = request.form.getlist('Genre')
-        
+
         recommendations = sp.recommendations(seed_genres=selected_options)
         recommendationsIDs = [(track['id'])for track in recommendations['tracks']]
         user = sp.current_user()

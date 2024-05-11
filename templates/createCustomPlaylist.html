@@ -9,7 +9,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="container">
+
+    <div> 
+        <div class="card w-96 bg-base-300 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">Recommendations based on your 5 songs</h2>
+                {% for artist, song in recommendations_info %}
+                <p>{{ artist }}: {{ song }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<form action="/createPlaylistRecommendations" method="post">
+    {% for id in recommendationsIDs %}
+    <input type="hidden" name="reccomendationIDs[]" value="{{ id }}">
+    {% endfor %}
+    <button type="submit" class="btn btn-accent">Create Recommendations Playlist</button>
+</form>
+
+    <!-- <div class="container">
         <form method="post" action="/createPlaylistGenres">
             <fieldset>
                 <legend><h2>Pick up to 5 Genres:</h2></legend>
@@ -31,6 +51,8 @@
         </form>
     </div>
 
+    
+
     <script type="text/javascript">
         function handleGenres() {
             var checkboxes = document.querySelectorAll('input[name="Genre"]');
@@ -44,6 +66,6 @@
                 return false;
             }
         }
-    </script>
+    </script> -->
 </body>
 </html>
