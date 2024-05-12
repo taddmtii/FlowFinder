@@ -29,5 +29,41 @@
             </div>
         </div>
     </navbar>
+    <div> 
+      <div>
+          <div class="card w-fill bg-base-300 shadow-xl">
+              <div class="card-body">
+                  <h2 class="m-auto card-title font-bold text-white pb-6">Recently Played Playlist Creation</h2>
+                  <!-- Add a form for user input -->
+                  <form action="/createRecentlyPlayedPlaylist" method="get">
+                      <div class="label">
+                          <span for="num_songs" class="label-text">Number of Tracks?</span>
+                      </div>
+                      <input type="number" class="input input-bordered input-accent w-full max-w-xs" id="num_songs" name="num_songs" min="1" max="50" value="10">
+                      <button type="submit" class="btn btn-accent">Generate Recently Played Tracks</button>
+                  </form>
+                  <!-- Display the recommended songs -->
+                  <div class="flex flex-wrap gap-4">
+                      {% for cover, artist, song in recentlyPlayedTracks_info %}
+                      <div class="flex flex-col bg-base-300 rounded-lg shadow-xl p-4 w-64">
+                          <img src="{{ cover }}" class="w-16 h-16 rounded-lg" alt="cover" />
+                          <div class="flex flex-col mt-2">
+                              <p class="text-lg text-white font-medium overflow-hidden whitespace-nowrap overflow-ellipsis">{{ song }}</p>
+                              <p class="overflow-hidden whitespace-nowrap overflow-ellipsis">{{ artist }}</p>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+              <form action="/createRecentlyPlayedPlaylistFORM" method="post">
+                  {% for id in trackIDList %}
+                  <input type="hidden" name="trackIDList[]" value="{{ id }}">
+                  {% endfor %}
+                  <button type="submit" class="btn btn-accent">Create Recently Played Playlist ({{ num_songs }})</button>
+                  <button class="btn btn-outline btn-error"><a href="/createCustomPlaylist">Go Back</a></button>    
+              </form>
+          </div>
+      </div>
+  </div>
 
 </html>
