@@ -158,14 +158,29 @@ def createCustomPlaylist():
 @app.route('/createRecentlyPlayedPlaylist', methods=['GET'])
 def createRecentlyPlayedPlaylist():
     #top tracks
+    # num_songs = request.args.get('num_songs', default=10, type=int)
+    # recentlyPlayedTracks = sp.current_user_recently_played(limit=num_songs)
+    # recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
+    # trackIDList = [track['track']['id'] for track in recentlyPlayedTracks['items']]
+    # #filter same songs because that exists for some reason.
+    # trackIDList = list(set(trackIDList))
+
     num_songs = request.args.get('num_songs', default=10, type=int)
     recentlyPlayedTracks = sp.current_user_recently_played(limit=num_songs)
-    recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
-    trackIDList = [track['track']['id'] for track in recentlyPlayedTracks['items']]
-    trackIDList = list(set(trackIDList))
-
-
-         
+    # Create a dict to store track information by track ID
+    track_info_dict = {}
+    for track in recentlyPlayedTracks['items']:
+        trackId = track['track']['id']
+        if trackId not in track_info_dict:
+            track_info_dict[trackId] = (
+                track['track']['album']['images'][0]['url'],
+                track['track']['album']['artists'][0]['name'],
+                track['track']['name']
+            )
+    num_songs = len(track_info_dict)
+    # Extract unique track IDs and track information
+    trackIDList = list(track_info_dict.keys())
+    recentlyPlayedTracks_info = [track_info_dict[track_id] for track_id in trackIDList]
     return render_template('createRecentlyPlayedPlaylist.html',
                            recentlyPlayedTracks_info = recentlyPlayedTracks_info,
                            trackIDList = trackIDList,
