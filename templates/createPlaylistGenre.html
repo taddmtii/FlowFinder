@@ -1,33 +1,122 @@
 <!DOCTYPE html>
-<html lang="en-US">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <title>Spotify Web App</title>
-    </head>
-    <!--NAVBAR-->
-    <navbar>
-          <div class="flex justify-center bg-base-100">
-            <div>
-              <div class="dropdown absolute left-0">
-                <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-                </div>
-                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
-                  <li><a href="/main">Home</a></li>
-                  <li><a href="/createCustomPlaylist">Create</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="flex justify-center items-align">
-              <a class="btn btn-ghost text-xl">FlowFinder</a>
-            </div>
-            <div class="flex">
-                <a class="btn btn-ghost text-xl absolute right-0" href="/logout">Logout</a>
-            </div>
-        </div>
-    </navbar>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Web App</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
+<!--NAVBAR-->
+<navbar>
+    <div class="flex justify-center bg-base-100">
+        <div>
+        <div class="dropdown absolute left-0">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
+            <li><a href="/main">Home</a></li>
+            <li><a href="/createCustomPlaylist">Create</a></li>
+            </ul>
+        </div>
+        </div>
+        <div class="flex justify-center items-align">
+        <a class="btn btn-ghost text-xl">FlowFinder</a>
+        </div>
+        <div class="flex">
+            <a class="btn btn-ghost text-xl absolute right-0" href="/logout">Logout</a>
+        </div>
+    </div>
+</navbar>
+
+<div> 
+    <div>
+      <script type="text/javascript">
+      function handleGenres() {
+        var checkboxes = document.querySelectorAll('input[name="Genre"]')
+        var checkedItems = 0;
+        for(var i = 0; i < checkboxes.length; i++){
+            if(checkboxes[i].checked)
+                checkedItems++;
+        }
+        if(checkedItems > 5)
+        {
+            alert("You can not choose more than 5 genres, pick wisely!");
+            return false
+        function handleGenres() {
+            var checkboxes = document.querySelectorAll('input[name="Genre"]');
+            var checkedItems = 0;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked)
+                    checkedItems++;
+            }
+            if (checkedItems > 5) {
+                alert("You cannot choose more than 5 genres, pick wisely!");
+                return false;
+            }
+        }
+      }
+      }
+      </script>
+
+        <form action="/createPlaylistGenre" method="post">
+          <div class="card w-fill bg-base-300 shadow-xl">
+              <div class="card-body">
+                  <h2 class="m-auto card-title font-bold text-white pb-6">Recommendations Based On Genre</h2>
+                  <fieldset>
+                      <h2>Pick up to 5 Genres</h2>
+                      {% for genre in genresList %}
+                      <input type="checkbox" name="Genre" value="{{genre}}" onclick="return handleGenres();"/> {{ genre }} <br />
+                      {% endfor %}
+                      <div class="flex gap-x-24 gap-y-8 flex-wrap">
+                          {% for category, genres in music_genres.items() %}
+                          <div>
+                              <label class="text-xl font-semibold" for="category">{{category}}</label>
+                              {% for genre in genres %}
+                              <div class="flex flex-row gap-x-2">
+                                  <input type="checkbox" name="Genre" onclick="return handleGenres();" value="{{genre}}">
+                                  <span>{{genre}}</span>
+                              </div>
+                              {% endfor %}
+                          </div>
+                          {% endfor %}
+                      </div>
+                    <div class="label">
+                        <span for="num_songs" class="label-text">Number of Songs?</span>
+                    </div>
+                    <input type="number" class="input input-bordered input-accent w-full max-w-xs" id="num_songs" name="num_songs" min="1" max="100" value="{{ num_songs }}">
+                    <button type="submit" class="btn btn-accent">Generate Recommendations</button>
+                  </fieldset>
+              </div>
+          </div>
+        </form>
+
+
+              <!-- Display the recommended songs -->
+              <div class="flex flex-wrap gap-4">
+                  {% for cover, artist, song in recommendations_info %}
+                  <div class="flex flex-col bg-base-300 rounded-lg shadow-xl p-4 w-64">
+                      <img src="{{ cover }}" class="w-16 h-16 rounded-lg" alt="cover" />
+                      <div class="flex flex-col mt-2">
+                          <p class="text-lg text-white font-medium overflow-hidden whitespace-nowrap overflow-ellipsis">{{ song }}</p>
+                          <p class="overflow-hidden whitespace-nowrap overflow-ellipsis">{{ artist }}</p>
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <form action="/createPlaylistGenreFORM" method="post">
+              {% for id in recommendationsIDs %}
+              <input type="hidden" name="recommendationsIDs[]" value="{{ id }}">
+              {% endfor %}
+              <button type="submit" class="btn btn-accent">Create Genre Recommendations Playlist ({{ num_songs }})</button>
+              <button class="btn btn-outline btn-error"><a href="/createCustomPlaylist">Go Back</a></button>    
+          </form>
+      </div>
+    </div>
+</div>
+</body>
 </html>
