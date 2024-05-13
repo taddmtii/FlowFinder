@@ -68,7 +68,7 @@
                   <fieldset>
                       <h2>Pick up to 5 Genres</h2>
                       {% for genre in genresList %}
-                      <input type="checkbox" name="Genre" value="{{genre}}" onclick="return handleGenres();"/> {{ genre }} <br />
+                      <input type="checkbox" class="checkbox checkbox-accent" name="Genre" value="{{genre}}" onclick="return handleGenres();"/> {{ genre }} <br />
                       {% endfor %}
                       <div class="flex gap-x-24 gap-y-8 flex-wrap">
                           {% for category, genres in music_genres.items() %}
@@ -76,7 +76,7 @@
                               <label class="text-xl font-semibold" for="category">{{category}}</label>
                               {% for genre in genres %}
                               <div class="flex flex-row gap-x-2">
-                                  <input type="checkbox" name="Genre" onclick="return handleGenres();" value="{{genre}}">
+                                  <input type="checkbox" class="checkbox checkbox-accent" name="Genre" onclick="return handleGenres();" value="{{genre}}">
                                   <span>{{genre}}</span>
                               </div>
                               {% endfor %}
