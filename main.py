@@ -4,7 +4,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
 import os
 from dotenv import load_dotenv
-from collections import Counter
+import random
 
 load_dotenv() #load environment variables
 
@@ -123,7 +123,37 @@ def main():
 
     #Recently Played songs
     recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
-    recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
+    track_info_dict = {}
+    duplicates = set()  # Keep track of duplicate track IDs
+    for track in recentlyPlayedTracks['items']:
+        trackId = track['track']['id']
+        if trackId not in track_info_dict:
+            track_info_dict[trackId] = (
+                track['track']['album']['images'][0]['url'],
+                track['track']['album']['artists'][0]['name'],
+                track['track']['name']
+            )
+        else:
+            duplicates.add(trackId)
+
+    # Fetch additional tracks until we have enough unique tracks
+    while len(duplicates) > 0:
+        additionalTracks = sp.current_user_recently_played(limit=len(duplicates))
+        for track in additionalTracks['items']:
+            trackId = track['track']['id']
+            if trackId not in track_info_dict and trackId not in duplicates:
+                track_info_dict[trackId] = (
+                    track['track']['album']['images'][0]['url'],
+                    track['track']['album']['artists'][0]['name'],
+                    track['track']['name']
+                )
+                duplicates.remove(trackId) 
+    # Shuffle the list of track IDs to display in random order
+    trackIDList = list(track_info_dict.keys())
+    random.shuffle(trackIDList)
+    recentlyPlayedTracks_info = [track_info_dict[track_id] for track_id in trackIDList]
+
+
     currentlyPlaying_info = ['', '', '']
     #Currently playing song / NOT iterable, only one result.
     currentlyPlaying = sp.current_user_playing_track()
@@ -157,14 +187,6 @@ def createCustomPlaylist():
 
 @app.route('/createRecentlyPlayedPlaylist', methods=['GET'])
 def createRecentlyPlayedPlaylist():
-    #top tracks
-    # num_songs = request.args.get('num_songs', default=10, type=int)
-    # recentlyPlayedTracks = sp.current_user_recently_played(limit=num_songs)
-    # recentlyPlayedTracks_info = [(track['track']['album']['images'][0]['url'], track['track']['album']['artists'][0]['name'], track['track']['name']) for track in recentlyPlayedTracks['items']]
-    # trackIDList = [track['track']['id'] for track in recentlyPlayedTracks['items']]
-    # #filter same songs because that exists for some reason.
-    # trackIDList = list(set(trackIDList))
-
     num_songs = request.args.get('num_songs', default=10, type=int)
     recentlyPlayedTracks = sp.current_user_recently_played(limit=num_songs)
     # Create a dict to store track information by track ID
