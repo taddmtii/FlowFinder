@@ -1,3 +1,0 @@
-Main container:
-	Container 1 (2 elements)
-	Container 2 (2 elements)

@@ -5,6 +5,7 @@ from spotipy.cache_handler import FlaskSessionCacheHandler
 import os
 from dotenv import load_dotenv
 import random
+import logging
 
 load_dotenv() #load environment variables
 
@@ -29,6 +30,8 @@ sp_oauth = SpotifyOAuth(
 ) #this is the spotify authentiation manager
 
 sp = Spotify(auth_manager=sp_oauth)
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 #global variables
 music_genres = {
@@ -99,10 +102,21 @@ def login():
         return redirect(auth_url)
     return redirect(url_for('main'))
 
+# @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
+# def callback():
+#     sp_oauth.get_access_token(request.args['code'])
+#     return redirect(url_for('main'))
+
 @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
 def callback():
-    sp_oauth.get_access_token(request.args['code'])
-    return redirect(url_for('main'))
+    try:
+        code = request.args['code']
+        sp_oauth.get_access_token(code)
+        logging.info("Successfully retrieved access token from Spotify")
+        return redirect(url_for('main'))
+    except Exception as e:
+        logging.error(f"Error in Spotify callback: {e}")
+        return "Error in Spotify callback. Please try again later.", 500
 
 @app.route('/main') #Retrieves the users playlists from Spotify API.
 def main():
@@ -121,10 +135,9 @@ def main():
     userProfilePicture = user['images'][1]['url']
     userUrl = user['external_urls']['spotify']
 
-    #Recently Played songs
     recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
+    # Create a dict to store track information by track ID
     track_info_dict = {}
-    duplicates = set()  # Keep track of duplicate track IDs
     for track in recentlyPlayedTracks['items']:
         trackId = track['track']['id']
         if trackId not in track_info_dict:
@@ -133,26 +146,9 @@ def main():
                 track['track']['album']['artists'][0]['name'],
                 track['track']['name']
             )
-        else:
-            duplicates.add(trackId)
-
-    # Fetch additional tracks until we have enough unique tracks
-    while len(duplicates) > 0:
-        additionalTracks = sp.current_user_recently_played(limit=len(duplicates))
-        for track in additionalTracks['items']:
-            trackId = track['track']['id']
-            if trackId not in track_info_dict and trackId not in duplicates:
-                track_info_dict[trackId] = (
-                    track['track']['album']['images'][0]['url'],
-                    track['track']['album']['artists'][0]['name'],
-                    track['track']['name']
-                )
-                duplicates.remove(trackId) 
-    # Shuffle the list of track IDs to display in random order
+    # Extract unique track IDs and track information
     trackIDList = list(track_info_dict.keys())
-    random.shuffle(trackIDList)
     recentlyPlayedTracks_info = [track_info_dict[track_id] for track_id in trackIDList]
-
 
     currentlyPlaying_info = ['', '', '']
     #Currently playing song / NOT iterable, only one result.
