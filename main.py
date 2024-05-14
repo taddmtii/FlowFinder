@@ -31,8 +31,6 @@ sp_oauth = SpotifyOAuth(
 
 sp = Spotify(auth_manager=sp_oauth)
 
-logging.basicConfig(filename='app.log', level=logging.DEBUG)
-
 #global variables
 music_genres = {
     "Rock and its subgenres": [
@@ -102,21 +100,10 @@ def login():
         return redirect(auth_url)
     return redirect(url_for('main'))
 
-# @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
-# def callback():
-#     sp_oauth.get_access_token(request.args['code'])
-#     return redirect(url_for('main'))
-
 @app.route('/callback') #Handles the callback from the spotify authentication process. Retrives acces token and redirects to main endpoint.
 def callback():
-    try:
-        code = request.args['code']
-        sp_oauth.get_access_token(code)
-        logging.info("Successfully retrieved access token from Spotify")
-        return redirect(url_for('main'))
-    except Exception as e:
-        logging.error(f"Error in Spotify callback: {e}")
-        return "Error in Spotify callback. Please try again later.", 500
+    sp_oauth.get_access_token(request.args['code'])
+    return redirect(url_for('main'))
 
 @app.route('/main') #Retrieves the users playlists from Spotify API.
 def main():
