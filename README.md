@@ -20,7 +20,7 @@ FlowFinder is a web application built with Python and Flask, utilizing the Spoti
 
 ## Installation
 
-1. Clone this repository: `git clone https://github.com/your-username/flowfinder.git`
+1. Clone this repository: `git clone https://github.com/taddmtii/FlowFinder.git`
 2. Navigate to the project directory: `cd flowfinder`
 3. Install dependencies: Ensure Python3 is installed, 'pip install flask', 'pip install spotipy'
 4. Set up your Spotify Developer account and get API credentials.
@@ -34,4 +34,4 @@ FlowFinder is a web application built with Python and Flask, utilizing the Spoti
 ## Acknowledgements
 
 - Thank you to the developers of Flask, Spotipy, Tailwind CSS, and DaisyUI for providing the tools and libraries necessary to build this project.
-- Special thanks to the Spotify Developer team for creating the Spotify Web API, enabling developers to build innovative applications like FlowFinder.
+- Special thanks to the Spotify Developer team for creating the Spotify Web API, enabling developers to build innovative applications like FlowFinder and the inspiration for this project, StatsforSpotify.
