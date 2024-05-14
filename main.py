@@ -118,7 +118,6 @@ def main():
     #get current users name for display
     user = sp.current_user()
     displayName = user['display_name']
-    userID = user['id']
     userProfilePicture = user['images'][1]['url']
     userUrl = user['external_urls']['spotify']
 
@@ -137,7 +136,7 @@ def main():
     trackIDList = list(track_info_dict.keys())
     recentlyPlayedTracks_info = [track_info_dict[track_id] for track_id in trackIDList]
 
-    currentlyPlaying_info = ['', '', '']
+    currentlyPlaying_info = []
     #Currently playing song / NOT iterable, only one result.
     currentlyPlaying = sp.current_user_playing_track()
     if currentlyPlaying is not None:
