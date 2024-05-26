@@ -4,8 +4,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
 import os
 from dotenv import load_dotenv
-import random
-import logging
+import webbrowser
 
 load_dotenv() #load environment variables
 
@@ -200,7 +199,8 @@ def createRecentlyPlayedPlaylistFORM():
         playlistID = playlist['id']
         # Add tracks to the playlist
         sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=trackIDList)
-        return redirect('/main') #maybe redirect to new playlist page?
+        playlistLink = playlist['external_urls']['spotify']
+        return redirect(f'{playlistLink}') 
 
 @app.route('/createTopTracksPlaylist', methods=['GET'])
 def createTopTracksPlaylist():
@@ -224,7 +224,8 @@ def createTopTracksPlaylistFORM():
         playlistID = playlist['id']
         # Add tracks to the playlist
         sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=trackIDList)
-        return redirect('/main') #maybe redirect to new playlist page?
+        playlistLink = playlist['external_urls']['spotify']
+        return redirect(f'{playlistLink}') 
 
 @app.route('/createRecommendationsPlaylist', methods=['GET'])
 def createRecommendationsPlaylist():
@@ -253,7 +254,8 @@ def createRecomendationsPlaylistFORM():
         playlistID = playlist['id']
         # Add tracks to the playlist
         sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
-        return redirect('/main') #maybe redirect to new playlist page?
+        playlistLink = playlist['external_urls']['spotify']
+        return redirect(f'{playlistLink}') 
 
 #Page that shows genre form, upon submission we redirect to createPlaylistgenres endpoint
 @app.route('/createPlaylistGenre', methods=['GET', 'POST'])
@@ -288,7 +290,8 @@ def createPlaylistGenreFORM():
         playlistID = playlist['id']
         # Add tracks to the playlist
         sp.user_playlist_add_tracks(user=userID, playlist_id=playlistID, tracks=recommendationsIDs)
-        return redirect('/main') #maybe redirect to new playlist page?
+        playlistLink = playlist['external_urls']['spotify']
+        return redirect(f'{playlistLink}') 
     
 @app.route('/logout') #Clears session data, effetively logging out the user, and redirects to the home page.
 def logout():
