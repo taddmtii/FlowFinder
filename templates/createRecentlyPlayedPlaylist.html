@@ -55,7 +55,7 @@
                       {% endfor %}
                   </div>
               </div>
-              <form action="/createRecentlyPlayedPlaylistFORM" method="post">
+              <form action="/createRecentlyPlayedPlaylistFORM" target="_blank" method="post">
                   {% for id in trackIDList %}
                   <input type="hidden" name="trackIDList[]" value="{{ id }}">
                   {% endfor %}
