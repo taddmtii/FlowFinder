@@ -4,7 +4,6 @@ from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
 import os
 from dotenv import load_dotenv
-import webbrowser
 
 load_dotenv() #load environment variables
 
@@ -13,7 +12,7 @@ app.config['SECRET_KEY'] = os.urandom(64)
 
 client_id = os.getenv("client_id") #get environment variable client_id
 client_secret = os.getenv("client_secret") #get enrionment variable client_secret
-redirect_uri = "http://localhost:5000/callback" #redirect url
+redirect_uri = "http://localhost:6060/callback" #redirect url
 scope = "playlist-read-private, playlist-read-collaborative, user-top-read, user-read-recently-played \
          playlist-modify-private, playlist-modify-public, user-library-modify, user-library-read \
          streaming, user-read-currently-playing, user-read-playback-state" #gets back users private playlists, we will need more than one scope
@@ -82,8 +81,7 @@ music_genres = {
     "Miscellaneous Genres": [
         "breakbeat", "cantopop", "comedy", "gospel", "happy", "party", "road-trip", 
         "show-tunes", "workout"
-    ]
-}
+    ] }
 
 
 #Endpoints
@@ -117,7 +115,9 @@ def main():
     #get current users name for display
     user = sp.current_user()
     displayName = user['display_name']
-    userProfilePicture = user['images'][1]['url']
+    userProfilePicture = 'https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png'
+    if user['images']:
+        userProfilePicture = user['images'][1]['url']
     userUrl = user['external_urls']['spotify']
 
     recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
@@ -299,4 +299,4 @@ def logout():
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=6060)
