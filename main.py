@@ -120,6 +120,11 @@ def main():
         userProfilePicture = user['images'][1]['url']
     userUrl = user['external_urls']['spotify']
 
+    #Get all user playlists
+    allPlaylists = sp.current_user_playlists()
+    #Get playlist names and urls
+    playlistInfo = [(playlist['images'][0]['url'], playlist['name'], playlist['external_urls']['spotify']) for playlist in allPlaylists['items']] 
+
     recentlyPlayedTracks = sp.current_user_recently_played(limit=10)
     # Create a dict to store track information by track ID
     track_info_dict = {}
@@ -156,8 +161,16 @@ def main():
                            recentlyPlayedTracks_info = recentlyPlayedTracks_info,
                            userProfilePicture = userProfilePicture,
                            userUrl = userUrl,
-                           currentlyPlaying_info = currentlyPlaying_info
+                           currentlyPlaying_info = currentlyPlaying_info,
+                           playlistInfo = playlistInfo
                            )
+
+@app.route('/managePlaylists', methods=['GET'])
+def managePlaylist():
+    if request.method == 'GET':
+        return render_template(
+            "managePlaylists.html"
+        )
 
 @app.route('/createCustomPlaylist', methods=['POST', 'GET'])
 def createCustomPlaylist():
