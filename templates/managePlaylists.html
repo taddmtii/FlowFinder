@@ -37,7 +37,8 @@
                     <div class="card-body">
                         <h2 class="m-auto card-title font-bold text-white pb-6">Playlists</h2>
                         {% for owner, image, name, url in playlistInfo %}
-                        {% if name != "DJ" %}
+                        <!--Ignores DJ playlist and any other playlist that is curated by spotify-->
+                        {% if owner != "Spotify" %}
                         <div class="flex gap-4">
                             <img src="{{ image }}" class="w-16 h-16 rounded-lg" alt="cover" />
                             <div class="flex flex-col">
