@@ -13,6 +13,8 @@ FlowFinder is a web application built with Python and Flask, utilizing the Spoti
 - Tailwind CSS
 - DaisyUI
 
+![image](https://github.com/user-attachments/assets/f574771a-1cf1-4314-bf92-3582310b5209)
+
 ## Features
 
 - **Recently Played Songs**: View a list of recently played songs on Spotify.
